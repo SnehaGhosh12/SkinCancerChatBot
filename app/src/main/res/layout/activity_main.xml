@@ -1,36 +1,52 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:background="@drawable/bg"
+    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MainActivity"
     >
 
     <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/RVchats"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/RVchats"/>
+        android:layout_height="0dp"
+        android:layout_marginLeft="18dp"
+        android:layout_marginRight="18dp"
+        android:layout_marginTop="11dp"
+        android:layout_marginBottom="11dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/RLMsg"
+        tools:ignore="MissingConstraints" />
+
     <RelativeLayout
+        android:id="@+id/RLMsg"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+
         android:layout_alignParentBottom="true"
-        android:layout_marginBottom="@dimen/cardview_default_elevation"
+        android:layout_marginLeft="17dp"
+        android:layout_marginRight="17dp"
+        android:layout_marginBottom="22dp"
         android:background="@drawable/msg_bar"
-        android:id="@+id/RLMsg">
+        android:padding="5dp"
+        app:layout_constraintBottom_toBottomOf="parent">
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/camera"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/baseline_camera_alt_24"
-            app:fabCustomSize="45dp"
-            android:backgroundTint="@color/white"
-            android:layout_margin="5dp"
-            app:borderWidth="0dp"
             android:layout_alignParentStart="true"
-            android:id="@+id/camera"></com.google.android.material.floatingactionbutton.FloatingActionButton>
+            android:layout_margin="5dp"
+            android:backgroundTint="@color/white"
+            android:src="@drawable/baseline_camera_alt_24"
+            app:borderWidth="0dp"
+            app:fabCustomSize="45dp"></com.google.android.material.floatingactionbutton.FloatingActionButton>
 
         <EditText
+            android:id="@+id/EditMsg"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
@@ -44,33 +60,32 @@
             android:hint="Enter Message"
             android:singleLine="true"
             android:textColor="@color/black"
-            android:textColorHint="@color/black"
-            android:id="@+id/EditMsg"/>
+            android:textColorHint="@color/black" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/attach"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/attachment"
-            android:layout_toLeftOf="@id/Send"
-            app:fabCustomSize="45dp"
-            android:backgroundTint="@color/white"
             android:layout_margin="5dp"
+            android:layout_toLeftOf="@id/Send"
+            android:backgroundTint="@color/white"
+            android:src="@drawable/baseline_photo_24"
             app:borderWidth="0dp"
-            android:id="@+id/attach">
-        </com.google.android.material.floatingactionbutton.FloatingActionButton>
+            app:fabCustomSize="45dp"></com.google.android.material.floatingactionbutton.FloatingActionButton>
 
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/Send"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
-            android:src="@drawable/send_btn"
-            app:fabCustomSize="45dp"
-            android:backgroundTint="@color/white"
             android:layout_margin="5dp"
+
+            android:backgroundTint="@color/white"
+            android:src="@drawable/send_btn"
             app:borderWidth="0dp"
-            android:id="@+id/Send"/>
+            app:fabCustomSize="45dp" />
 
     </RelativeLayout>
 
-</RelativeLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

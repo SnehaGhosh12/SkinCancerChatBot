@@ -1,20 +1,27 @@
 package com.example.detecto;
 
 import android.content.Context;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
+import android.widget.RelativeLayout;
 import android.widget.Switch;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.Locale;
 
 public class ChatRVAdapter extends RecyclerView.Adapter{
 
     private ArrayList<ChatsModel> chatsModelArrayList;
+     private String currentTime;
     private Context context;
 
     public ChatRVAdapter(ArrayList<ChatsModel> chatsModelArrayList, Context context) {
@@ -26,9 +33,11 @@ public class ChatRVAdapter extends RecyclerView.Adapter{
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view;
+
         switch (viewType){
             case 0:
                 view = LayoutInflater.from(parent.getContext()).inflate(R.layout.user_msg_rv,parent,false);
+
                 return new UserViewHolder(view);
             case 1:
                 view = LayoutInflater.from(parent.getContext()).inflate(R.layout.bot_msg_rv,parent,false);
@@ -43,9 +52,13 @@ public class ChatRVAdapter extends RecyclerView.Adapter{
         switch (chatsModel.getSender()){
             case "user":
                 ((UserViewHolder)holder).userMsg.setText(chatsModel.getMessage());
+                currentTime = new SimpleDateFormat("HH:mm", Locale.getDefault()).format(new Date());
+                ((UserViewHolder)holder).userTime.setText(currentTime);
                 break;
             case "bot":
                 ((BotViewHolder)holder).botMsg.setText(chatsModel.getMessage());
+                currentTime = new SimpleDateFormat("HH:mm", Locale.getDefault()).format(new Date());
+                ((BotViewHolder)holder).botTime.setText(currentTime);
                 break;
         }
     }
@@ -68,20 +81,22 @@ public class ChatRVAdapter extends RecyclerView.Adapter{
     }
 
     public static class UserViewHolder extends RecyclerView.ViewHolder{
-        TextView userMsg;
+        TextView userMsg,userTime;
 
         public UserViewHolder(@NonNull View itemView) {
             super(itemView);
             userMsg= itemView.findViewById(R.id.userMsg);
+            userTime=itemView.findViewById(R.id.userTime);
         }
     }
 
     public static class BotViewHolder extends RecyclerView.ViewHolder{
-        TextView botMsg;
+        TextView botMsg,botTime;
 
         public BotViewHolder(@NonNull View itemView) {
             super(itemView);
             botMsg = itemView.findViewById(R.id.botMsg);
+            botTime=itemView.findViewById(R.id.botTime);
         }
     }
 }
