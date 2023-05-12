@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity"
+    >
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/RVchats"/>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="@dimen/cardview_default_elevation"
+        android:background="@drawable/msg_bar"
+        android:id="@+id/RLMsg">
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/baseline_camera_alt_24"
+            app:fabCustomSize="45dp"
+            android:backgroundTint="@color/white"
+            android:layout_margin="5dp"
+            app:borderWidth="0dp"
+            android:layout_alignParentStart="true"
+            android:id="@+id/camera"></com.google.android.material.floatingactionbutton.FloatingActionButton>
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_marginStart="3dp"
+            android:layout_marginTop="3dp"
+            android:layout_marginEnd="3dp"
+            android:layout_marginBottom="3dp"
+            android:layout_toLeftOf="@+id/attach"
+            android:layout_toRightOf="@+id/camera"
+            android:background="@null"
+            android:hint="Enter Message"
+            android:singleLine="true"
+            android:textColor="@color/black"
+            android:textColorHint="@color/black"
+            android:id="@+id/EditMsg"/>
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/attachment"
+            android:layout_toLeftOf="@id/Send"
+            app:fabCustomSize="45dp"
+            android:backgroundTint="@color/white"
+            android:layout_margin="5dp"
+            app:borderWidth="0dp"
+            android:id="@+id/attach">
+        </com.google.android.material.floatingactionbutton.FloatingActionButton>
+
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:src="@drawable/send_btn"
+            app:fabCustomSize="45dp"
+            android:backgroundTint="@color/white"
+            android:layout_margin="5dp"
+            app:borderWidth="0dp"
+            android:id="@+id/Send"/>
+
+    </RelativeLayout>
+
+</RelativeLayout>
