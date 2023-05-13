@@ -1,58 +1,88 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-
-    app:layout_constraintLeft_toLeftOf="parent"
-    android:layout_margin="5dp"
-    app:cardBackgroundColor="#4E514A"
-    android:elevation="8dp"
-    app:cardCornerRadius="8dp">
-<LinearLayout
-    android:layout_width="wrap_content"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical">
+
+    android:layout_margin="2dp"
+    app:layout_constraintLeft_toLeftOf="parent">
+
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:id="@+id/linearLayout3"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Bot Message"
-            android:layout_margin="5dp"
-            android:textColor="@color/white"
-            android:layout_gravity="center"
-            android:padding="3dp"
-            android:id="@+id/botMsg"/>
-
-        <ImageView
-            android:layout_width="35dp"
-            android:layout_height="35dp"
-            android:layout_margin="8dp"
-            android:src="@drawable/bot"/>
-
-
-
-    </LinearLayout>
-    <RelativeLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="right"
-        android:paddingRight="12dp"
-        android:paddingBottom="7dp"
-        >
-        <TextView
-            android:id="@+id/botTime"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="12.35pm"
+            android:text="Detecto"
+            android:paddingLeft="9dp"
+            android:paddingBottom="2dp"
             android:textSize="12sp"
-            android:textColor="@color/white"
+            android:textColor="#322F2F"
             />
-    </RelativeLayout>
-</LinearLayout>
 
-</androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cardView2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:elevation="8dp"
+            app:cardBackgroundColor="#4E514A"
+            app:cardCornerRadius="8dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/botMsg"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_margin="5dp"
+                        android:padding="3dp"
+                        android:text="Bot Message"
+                        android:textColor="@color/white" />
+
+                    <ImageView
+                        android:layout_width="35dp"
+                        android:layout_height="35dp"
+                        android:layout_margin="6dp"
+                        android:src="@drawable/bot" />
+
+
+                </LinearLayout>
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="right"
+                    android:paddingRight="12dp"
+                    android:paddingBottom="5dp">
+
+                    <TextView
+                        android:id="@+id/botTime"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="12.35pm"
+                        android:textColor="@color/white"
+                        android:textSize="10sp" />
+                </RelativeLayout>
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
