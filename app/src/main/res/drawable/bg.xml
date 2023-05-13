@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <shape xmlns:android="http://schemas.android.com/apk/res/android">
       <gradient
-          android:endColor="#007AA5"
-          android:startColor="#52D4DE"
+          android:endColor="#71B6ED"
+          android:startColor="#C6CED5"
           android:gradientRadius="@dimen/cardview_compat_inset_shadow"/>
 
 </shape>
