@@ -1,17 +1,18 @@
 package com.example.detecto;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.LinearLayout;
+import android.widget.ImageView;
 import android.widget.Toast;
+
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -29,11 +30,15 @@ public class MainActivity extends AppCompatActivity {
     FloatingActionButton camera,attach;
     public EditText editmsg;
     private FloatingActionButton send;
+    private ImageView imgPreview;
     private final String BOT_KEY = "bot";
+     public String uri;
     private final String USER_KEY = "user";
+    private final String img_KEY = "img";
 
     private ArrayList<ChatsModel> chatsModelArrayList;
     private ChatRVAdapter chatRVAdapter;
+    public static final int PICK_IMAGE = 1;
 
 
     @SuppressLint("MissingInflatedId")
@@ -47,6 +52,7 @@ public class MainActivity extends AppCompatActivity {
         camera=findViewById(R.id.camera);
         attach=findViewById(R.id.attach);
         send = findViewById(R.id.Send);
+        imgPreview=findViewById(R.id.ImagePreview);
         chatsModelArrayList = new ArrayList<>();
         chatRVAdapter = new ChatRVAdapter(chatsModelArrayList,this);
 
@@ -72,9 +78,12 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent i=new Intent(MediaStore.ACTION_PICK_IMAGES);
-                startActivity(i);
+                startActivityForResult(Intent.createChooser(i, "Select Picture"), 1);
+
             }
         });
+
+
         camera.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -82,6 +91,29 @@ public class MainActivity extends AppCompatActivity {
                 startActivityForResult(intent,1);
             }
         });
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+//        try {
+//            imgPreview.setImageBitmap(BitmapFactory.decodeStream(getContentResolver()
+//                    .openInputStream(data.getData()), null, new BitmapFactory.Options()));
+//        } catch (FileNotFoundException e) {
+//            throw new RuntimeException(e);
+//        }
+//           if(!data.getData().toString().isEmpty()){
+//               Toast.makeText(this, "Hiii", Toast.LENGTH_SHORT).show();
+//               uri=data.getData().toString();
+//               Picasso.get().load(uri).resize(1000, 800).into(imgPreview);
+//               chatsModelArrayList.add(new ChatsModel(uri,img_KEY));
+//
+//               chatRVAdapter.notifyDataSetChanged();
+//               chatsRV.scrollToPosition(chatsModelArrayList.size()-1);
+//               getResponse(editmsg.getText().toString());
+//               editmsg.setText("");
+//           }
+
     }
 
     public void getResponse(String message){

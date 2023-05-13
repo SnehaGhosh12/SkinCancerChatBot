@@ -3,6 +3,7 @@ package com.example.detecto;
 public class ChatsModel {
     private String message;
     private String sender;
+    private  String imgUrl;
 
     public String getMessage() {
         return message;
@@ -24,4 +25,10 @@ public class ChatsModel {
         this.message = message;
         this.sender = sender;
     }
+
+    public String getImageUrl() {
+
+        return message;
+    }
+
 }
