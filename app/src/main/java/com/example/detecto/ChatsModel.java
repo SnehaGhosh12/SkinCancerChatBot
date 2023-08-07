@@ -1,9 +1,26 @@
 package com.example.detecto;
 
+import android.graphics.Bitmap;
+import android.net.Uri;
+
 public class ChatsModel {
     private String message;
     private String sender;
-    private  String imgUrl;
+    private Uri imgUrl;
+    private  Bitmap imgBitmap;
+
+    public ChatsModel(Uri uri,String sender) {
+        this.imgUrl=uri;
+        this.sender=sender;
+    }
+    public ChatsModel(Bitmap imgBitmap, String sender) {
+        this.imgBitmap=imgBitmap;
+        this.sender=sender;
+    }
+    public Bitmap getImageBitmap(){
+        return  imgBitmap;
+    }
+
 
     public String getMessage() {
         return message;
@@ -26,9 +43,12 @@ public class ChatsModel {
         this.sender = sender;
     }
 
-    public String getImageUrl() {
+    public void setImageUrl(Uri imgUrl) {
 
-        return message;
+        this.imgUrl=imgUrl;
+    }
+    public Uri getImageUrl(){
+        return  imgUrl;
     }
 
 }

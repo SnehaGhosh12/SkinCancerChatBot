@@ -2,6 +2,8 @@ package com.example.detecto;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.view.View;
@@ -35,10 +37,12 @@ public class MainActivity extends AppCompatActivity {
      public String uri;
     private final String USER_KEY = "user";
     private final String img_KEY = "img";
+    private final String cam_img = "camera";
 
     private ArrayList<ChatsModel> chatsModelArrayList;
     private ChatRVAdapter chatRVAdapter;
-    public static final int PICK_IMAGE = 1;
+    public static final int GALLERY_REQ_CODE  = 100;
+    public static final int CAMERA_REQ_CODE  = 101;
 
 
     @SuppressLint("MissingInflatedId")
@@ -52,7 +56,7 @@ public class MainActivity extends AppCompatActivity {
         camera=findViewById(R.id.camera);
         attach=findViewById(R.id.attach);
         send = findViewById(R.id.Send);
-        imgPreview=findViewById(R.id.ImagePreview);
+        imgPreview=findViewById(R.id.skin_image);
         chatsModelArrayList = new ArrayList<>();
         chatRVAdapter = new ChatRVAdapter(chatsModelArrayList,this);
 
@@ -77,8 +81,9 @@ public class MainActivity extends AppCompatActivity {
         attach.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i=new Intent(MediaStore.ACTION_PICK_IMAGES);
-                startActivityForResult(Intent.createChooser(i, "Select Picture"), 1);
+                Intent iGallary=new Intent(Intent.ACTION_PICK);
+                iGallary.setData(MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                startActivityForResult(iGallary,GALLERY_REQ_CODE);
 
             }
         });
@@ -87,8 +92,8 @@ public class MainActivity extends AppCompatActivity {
         camera.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                startActivityForResult(intent,1);
+                  Intent iCamera=new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                  startActivityForResult(iCamera,CAMERA_REQ_CODE);
             }
         });
     }
@@ -96,25 +101,23 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-//        try {
-//            imgPreview.setImageBitmap(BitmapFactory.decodeStream(getContentResolver()
-//                    .openInputStream(data.getData()), null, new BitmapFactory.Options()));
-//        } catch (FileNotFoundException e) {
-//            throw new RuntimeException(e);
-//        }
-//           if(!data.getData().toString().isEmpty()){
-//               Toast.makeText(this, "Hiii", Toast.LENGTH_SHORT).show();
-//               uri=data.getData().toString();
-//               Picasso.get().load(uri).resize(1000, 800).into(imgPreview);
-//               chatsModelArrayList.add(new ChatsModel(uri,img_KEY));
-//
-//               chatRVAdapter.notifyDataSetChanged();
-//               chatsRV.scrollToPosition(chatsModelArrayList.size()-1);
-//               getResponse(editmsg.getText().toString());
-//               editmsg.setText("");
-//           }
-
+        if(resultCode==RESULT_OK){
+            if(requestCode==GALLERY_REQ_CODE){
+//                for gallery
+                Uri uri= data.getData();
+                chatsModelArrayList.add(new ChatsModel(uri,img_KEY));
+                chatRVAdapter.notifyDataSetChanged();
+                chatsRV.scrollToPosition(chatsModelArrayList.size()-1);
+            }
+            if(requestCode==CAMERA_REQ_CODE){
+                Bitmap imgBitmap=(Bitmap)data.getExtras().get("data");
+                chatsModelArrayList.add(new ChatsModel(imgBitmap,cam_img));
+                chatRVAdapter.notifyDataSetChanged();
+                chatsRV.scrollToPosition(chatsModelArrayList.size()-1);
+            }
+        }
     }
+
 
     public void getResponse(String message){
         String url= "http://api.brainshop.ai/get?bid=175248&key=MwQGePFXLShwVDGN&uid=[uid]&msg="+message;
