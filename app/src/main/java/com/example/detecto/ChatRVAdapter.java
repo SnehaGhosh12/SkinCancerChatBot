@@ -1,6 +1,7 @@
 package com.example.detecto;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -43,7 +44,8 @@ public class ChatRVAdapter extends RecyclerView.Adapter{
                 return new BotViewHolder(view);
 
             case 2:
-                view=LayoutInflater.from(context).inflate(R.layout.image_layout,parent,false);
+            case 3:
+                view=LayoutInflater.from(context).inflate(R.layout.user_img,parent,false);
                 return  new ImageViewHolder(view);
         }
         return null;
@@ -64,8 +66,10 @@ public class ChatRVAdapter extends RecyclerView.Adapter{
                 ((BotViewHolder)holder).botTime.setText(currentTime);
                 break;
             case "img":
-                Picasso.get().load(chatsModel.getImageUrl()).into(((ImageViewHolder)holder).img);
+                Picasso.get().load(chatsModel.getImageUrl()).resize(800,1000).onlyScaleDown().into(((ImageViewHolder)holder).img);
                 break;
+            case "camera":
+                ((ImageViewHolder)holder).img.setImageBitmap(Bitmap.createScaledBitmap(chatsModel.getImageBitmap(), 800, 600, false));
         }
     }
 
@@ -78,6 +82,8 @@ public class ChatRVAdapter extends RecyclerView.Adapter{
                 return 1;
             case "img":
                 return 2;
+            case "camera":
+                return 3;
             default:
                 return -1;
         }
@@ -100,9 +106,11 @@ public class ChatRVAdapter extends RecyclerView.Adapter{
 
     public static class ImageViewHolder extends  RecyclerView.ViewHolder{
         ImageView img;
+        TextView userTime;
         public ImageViewHolder(@NonNull View itemView) {
             super(itemView);
-            img=itemView.findViewById(R.id.ImagePreview);
+            img=itemView.findViewById(R.id.skin_image);
+            userTime=itemView.findViewById(R.id.userImgTime);
         }
     }
     public static class BotViewHolder extends RecyclerView.ViewHolder{
