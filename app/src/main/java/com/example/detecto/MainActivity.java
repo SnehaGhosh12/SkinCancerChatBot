@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 import retrofit2.Call;
@@ -105,9 +106,16 @@ public class MainActivity extends AppCompatActivity {
             if(requestCode==GALLERY_REQ_CODE){
 //                for gallery
                 Uri uri= data.getData();
-                chatsModelArrayList.add(new ChatsModel(uri,img_KEY));
-                chatRVAdapter.notifyDataSetChanged();
-                chatsRV.scrollToPosition(chatsModelArrayList.size()-1);
+                try {
+                    Bitmap imgBitmap=MediaStore.Images.Media.getBitmap(this.getContentResolver(),uri);
+                    chatsModelArrayList.add(new ChatsModel(imgBitmap,cam_img));
+                    chatRVAdapter.notifyDataSetChanged();
+                    chatsRV.scrollToPosition(chatsModelArrayList.size()-1);
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+
+
             }
             if(requestCode==CAMERA_REQ_CODE){
                 Bitmap imgBitmap=(Bitmap)data.getExtras().get("data");

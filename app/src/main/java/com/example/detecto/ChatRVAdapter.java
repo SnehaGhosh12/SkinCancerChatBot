@@ -11,8 +11,6 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.squareup.picasso.Picasso;
-
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -44,7 +42,7 @@ public class ChatRVAdapter extends RecyclerView.Adapter{
                 return new BotViewHolder(view);
 
             case 2:
-            case 3:
+//            case 3:
                 view=LayoutInflater.from(context).inflate(R.layout.user_img,parent,false);
                 return  new ImageViewHolder(view);
         }
@@ -65,9 +63,9 @@ public class ChatRVAdapter extends RecyclerView.Adapter{
                 currentTime = new SimpleDateFormat("HH:mm", Locale.getDefault()).format(new Date());
                 ((BotViewHolder)holder).botTime.setText(currentTime);
                 break;
-            case "img":
-                Picasso.get().load(chatsModel.getImageUrl()).resize(800,1000).onlyScaleDown().into(((ImageViewHolder)holder).img);
-                break;
+//            case "img":
+//                Picasso.get().load(chatsModel.getImageUrl()).resize(800,1000).onlyScaleDown().into(((ImageViewHolder)holder).img);
+//                break;
             case "camera":
                 ((ImageViewHolder)holder).img.setImageBitmap(Bitmap.createScaledBitmap(chatsModel.getImageBitmap(), 800, 600, false));
         }
@@ -80,10 +78,10 @@ public class ChatRVAdapter extends RecyclerView.Adapter{
                 return 0;
             case "bot":
                 return 1;
-            case "img":
-                return 2;
             case "camera":
-                return 3;
+                return 2;
+//            case "camera":
+//                return 3;
             default:
                 return -1;
         }
