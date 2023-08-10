@@ -16,9 +16,15 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.detecto.ml.Model;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import org.tensorflow.lite.DataType;
+import org.tensorflow.lite.support.image.TensorImage;
+import org.tensorflow.lite.support.tensorbuffer.TensorBuffer;
+
 import java.io.IOException;
+import java.nio.ByteBuffer;
 import java.util.ArrayList;
 
 import retrofit2.Call;
@@ -42,8 +48,10 @@ public class MainActivity extends AppCompatActivity {
 
     private ArrayList<ChatsModel> chatsModelArrayList;
     private ChatRVAdapter chatRVAdapter;
+    private Bitmap imgBitmap;
     public static final int GALLERY_REQ_CODE  = 100;
     public static final int CAMERA_REQ_CODE  = 101;
+    String[] classes={"akiec","bcc","bkl","df","mel","nv","vas"};
 
 
     @SuppressLint("MissingInflatedId")
@@ -86,6 +94,7 @@ public class MainActivity extends AppCompatActivity {
                 iGallary.setData(MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                 startActivityForResult(iGallary,GALLERY_REQ_CODE);
 
+
             }
         });
 
@@ -99,6 +108,48 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    private void model(){
+        imgBitmap=Bitmap.createScaledBitmap(imgBitmap,32,32,true);
+//        imgBitmap= imgBitmap.copy(Bitmap.Config.ARGB_8888, true);
+        try {
+            Model model = Model.newInstance(getApplicationContext());
+
+            // Creates inputs for reference.
+            TensorBuffer inputFeature0 = TensorBuffer.createFixedSize(new int[]{1, 32, 32, 3}, DataType.FLOAT32);
+            TensorImage tensorImage=new TensorImage(DataType.FLOAT32);
+            tensorImage.load(imgBitmap);
+            ByteBuffer byteBuffer=tensorImage.getBuffer();
+
+
+            inputFeature0.loadBuffer(byteBuffer);
+
+            // Runs model inference and gets result.
+            Model.Outputs outputs = model.process(inputFeature0);
+            TensorBuffer outputFeature0 = outputs.getOutputFeature0AsTensorBuffer();
+//            String s=String.valueOf(outputFeature0.getFloatArray()[0])+"\n "+String.valueOf(outputFeature0.getFloatArray()[1])
+//                    +"\n "+String.valueOf(outputFeature0.getFloatArray()[2])+"\n "+String.valueOf(outputFeature0.getFloatArray()[3])
+//                    +"\n "+String.valueOf(outputFeature0.getFloatArray()[4])+"\n "+String.valueOf(outputFeature0.getFloatArray()[5])
+//                    +"\n "+String.valueOf(outputFeature0.getFloatArray()[6]);
+            int max=Integer.MIN_VALUE;
+            int res=-1;
+            for(int i=0;i<7;i++){
+                if(outputFeature0.getFloatArray()[i]>max){
+                    max= (int) outputFeature0.getFloatArray()[i];
+                    res=i;
+                }
+            }
+            chatsModelArrayList.add(new ChatsModel(classes[res],BOT_KEY));
+            chatRVAdapter.notifyDataSetChanged();
+            chatsRV.scrollToPosition(chatsModelArrayList.size()-1);
+
+            // Releases model resources if no longer used.
+            model.close();
+        } catch (IOException e) {
+            // TODO Handle the exception
+        }
+//        return res;
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -107,10 +158,13 @@ public class MainActivity extends AppCompatActivity {
 //                for gallery
                 Uri uri= data.getData();
                 try {
-                    Bitmap imgBitmap=MediaStore.Images.Media.getBitmap(this.getContentResolver(),uri);
+                    imgBitmap=MediaStore.Images.Media.getBitmap(this.getContentResolver(),uri);
+
                     chatsModelArrayList.add(new ChatsModel(imgBitmap,cam_img));
                     chatRVAdapter.notifyDataSetChanged();
                     chatsRV.scrollToPosition(chatsModelArrayList.size()-1);
+                    model();
+
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
@@ -118,11 +172,12 @@ public class MainActivity extends AppCompatActivity {
 
             }
             if(requestCode==CAMERA_REQ_CODE){
-                Bitmap imgBitmap=(Bitmap)data.getExtras().get("data");
+                imgBitmap=(Bitmap)data.getExtras().get("data");
                 chatsModelArrayList.add(new ChatsModel(imgBitmap,cam_img));
                 chatRVAdapter.notifyDataSetChanged();
                 chatsRV.scrollToPosition(chatsModelArrayList.size()-1);
             }
+//            model();
         }
     }
 
