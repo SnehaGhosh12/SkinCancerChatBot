@@ -2,10 +2,14 @@ package com.example.detecto;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.media.ThumbnailUtils;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.provider.OpenableColumns;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -51,8 +55,10 @@ public class MainActivity extends AppCompatActivity {
     private Bitmap imgBitmap;
     public static final int GALLERY_REQ_CODE = 100;
     public static final int CAMERA_REQ_CODE = 101;
-    String[] classes = {"akiec", "bcc", "bkl", "df", "mel", "nv", "vas"};
+    String[] classe = {"melanocytic nevi", "melanoma", "benign keratosis-like lesions", "basal cell carcinoma", "pyogenic granulomas and hemorrhage",
+            "Actinic keratoses and intraepithelial carcinomae", "dermatofibroma"};
 
+    String[] classes={"akiec","bcc","bkl","df","nv","vasc","mel"};
 
     @SuppressLint("MissingInflatedId")
     @Override
@@ -109,45 +115,72 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void model() {
-        imgBitmap = Bitmap.createScaledBitmap(imgBitmap, 32, 32, true);
+
+        imgBitmap = Bitmap.createScaledBitmap(imgBitmap, 28, 28, false);
 //        imgBitmap= imgBitmap.copy(Bitmap.Config.ARGB_8888, true);
+        TensorImage tensorImage = new TensorImage(DataType.FLOAT32);
+        tensorImage.load(imgBitmap);
+        ByteBuffer byteBuffer = tensorImage.getBuffer();
         try {
             Model model = Model.newInstance(getApplicationContext());
 
             // Creates inputs for reference.
-            TensorBuffer inputFeature0 = TensorBuffer.createFixedSize(new int[]{1, 32, 32, 3}, DataType.FLOAT32);
-            TensorImage tensorImage = new TensorImage(DataType.FLOAT32);
-            tensorImage.load(imgBitmap);
-            ByteBuffer byteBuffer = tensorImage.getBuffer();
-
-
+            TensorBuffer inputFeature0 = TensorBuffer.createFixedSize(new int[]{1, 28, 28, 3}, DataType.FLOAT32);
             inputFeature0.loadBuffer(byteBuffer);
 
             // Runs model inference and gets result.
             Model.Outputs outputs = model.process(inputFeature0);
             TensorBuffer outputFeature0 = outputs.getOutputFeature0AsTensorBuffer();
-//            String s=String.valueOf(outputFeature0.getFloatArray()[0])+"\n "+String.valueOf(outputFeature0.getFloatArray()[1])
-//                    +"\n "+String.valueOf(outputFeature0.getFloatArray()[2])+"\n "+String.valueOf(outputFeature0.getFloatArray()[3])
-//                    +"\n "+String.valueOf(outputFeature0.getFloatArray()[4])+"\n "+String.valueOf(outputFeature0.getFloatArray()[5])
-//                    +"\n "+String.valueOf(outputFeature0.getFloatArray()[6]);
-            int max = Integer.MIN_VALUE;
+
+            float max = Float.MIN_VALUE;
             int res = -1;
             for (int i = 0; i < 7; i++) {
+                Log.d("i",""+outputFeature0.getFloatArray()[i]);
                 if (outputFeature0.getFloatArray()[i] > max) {
-                    max = (int) outputFeature0.getFloatArray()[i];
+                    max = outputFeature0.getFloatArray()[i];
                     res = i;
                 }
             }
+            Log.d("i",""+res);
+
             chatsModelArrayList.add(new ChatsModel(classes[res], BOT_KEY));
             chatRVAdapter.notifyDataSetChanged();
-            chatsRV.scrollToPosition(chatsModelArrayList.size() - 1);
 
+            chatsRV.scrollToPosition(chatsModelArrayList.size() - 1);
             // Releases model resources if no longer used.
             model.close();
         } catch (IOException e) {
             // TODO Handle the exception
         }
-//        return res;
+
+//        try {
+//            Model model = Model.newInstance(getApplicationContext());
+//
+//            // Creates inputs for reference.
+//            TensorBuffer inputFeature0 = TensorBuffer.createFixedSize(new int[]{1, 32, 32, 3}, DataType.FLOAT32);
+//            inputFeature0.loadBuffer(byteBuffer);
+//
+//            // Runs model inference and gets result.
+//            Model.Outputs outputs = model.process(inputFeature0);
+//            TensorBuffer outputFeature0 = outputs.getOutputFeature0AsTensorBuffer();
+//
+//            int max = Integer.MIN_VALUE;
+//            int res = -1;
+//            for (int i = 0; i < 7; i++) {
+//                if (outputFeature0.getFloatArray()[i] > max) {
+//                    max = (int) outputFeature0.getFloatArray()[i];
+//                    res = i;
+//                }
+//            }
+//            chatsModelArrayList.add(new ChatsModel(classes[res], BOT_KEY));
+//            chatRVAdapter.notifyDataSetChanged();
+//            chatsRV.scrollToPosition(chatsModelArrayList.size() - 1);
+//            // Releases model resources if no longer used.
+//            model.close();
+//        } catch (IOException e) {
+//            // TODO Handle the exception
+//        }
+
     }
 
     @Override
@@ -164,7 +197,9 @@ public class MainActivity extends AppCompatActivity {
                     chatRVAdapter.notifyDataSetChanged();
                     chatsRV.scrollToPosition(chatsModelArrayList.size() - 1);
                     model();
-
+                    chatsModelArrayList.add(new ChatsModel(getFileName(uri), BOT_KEY));
+                    chatRVAdapter.notifyDataSetChanged();
+                    chatsRV.scrollToPosition(chatsModelArrayList.size() - 1);
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
@@ -175,9 +210,12 @@ public class MainActivity extends AppCompatActivity {
 //                for camera
                 if ((data != null ? data.getExtras() : null) != null) {
                     imgBitmap = (Bitmap) data.getExtras().get("data");
+                    int dimension= Math.min(imgBitmap.getHeight(),imgBitmap.getWidth());
+                    imgBitmap= ThumbnailUtils.extractThumbnail(imgBitmap,dimension,dimension);
                     chatsModelArrayList.add(new ChatsModel(imgBitmap, cam_img));
                     chatRVAdapter.notifyDataSetChanged();
                     chatsRV.scrollToPosition(chatsModelArrayList.size() - 1);
+//                    model();
                 }
 
             }
@@ -217,5 +255,25 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
+    }
+    public String getFileName(Uri uri) {
+        try {
+            Cursor returnCursor =
+                    getContentResolver().query(uri, null, null, null, null);
+            /*
+             * Get the column indexes of the data in the Cursor,
+             * move to the first row in the Cursor, get the data,
+             * and display it.
+             */
+            int nameIndex = returnCursor.getColumnIndex(OpenableColumns.DISPLAY_NAME);
+            int sizeIndex = returnCursor.getColumnIndex(OpenableColumns.SIZE);
+            returnCursor.moveToFirst();
+            return returnCursor.getString(nameIndex);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return "unknown";
     }
 }
