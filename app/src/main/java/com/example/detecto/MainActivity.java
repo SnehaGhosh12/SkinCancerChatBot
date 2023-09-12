@@ -54,6 +54,7 @@ public class MainActivity extends AppCompatActivity {
     private ArrayList<ChatsModel> chatsModelArrayList;
     private ChatRVAdapter chatRVAdapter;
     private Bitmap imgBitmap;
+    private long pressedTime;
     public static final int GALLERY_REQ_CODE = 100;
     public static final int CAMERA_REQ_CODE = 101;
     String[] classe = {"melanocytic nevi", "melanoma", "benign keratosis-like lesions", "basal cell carcinoma", "pyogenic granulomas and hemorrhage",
@@ -287,5 +288,16 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return "unknown";
+    }
+    @Override
+    public void onBackPressed() {
+
+        if (pressedTime + 2000 > System.currentTimeMillis()) {
+            super.onBackPressed();
+            finish();
+        } else {
+            Toast.makeText(getBaseContext(), "Press back again to exit", Toast.LENGTH_SHORT).show();
+        }
+        pressedTime = System.currentTimeMillis();
     }
 }
