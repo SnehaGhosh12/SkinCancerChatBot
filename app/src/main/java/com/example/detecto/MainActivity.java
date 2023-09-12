@@ -150,10 +150,10 @@ public class MainActivity extends AppCompatActivity {
             model.close();
             Log.d("res:",classes[res]);
             if(!Objects.equals(classes[res],"benign keratosis-like lesions")) {
-                chatsModelArrayList.add(new ChatsModel("There is a possibility of " + String.valueOf(max * 100) + "% that this maybe " + classes[res], BOT_KEY));
-
+                chatsModelArrayList.add(new ChatsModel("There is a possibility of " + String.valueOf(max * 100) + "% that this maybe " + classes[res]+".", BOT_KEY));
+//                chatsModelArrayList.add(new ChatsModel("Visit to a Doctor is recommended",BOT_KEY));
             }else{
-                chatsModelArrayList.add(new ChatsModel("It seems that this is not any kind of Skin Cancer with accuracy "+ String.valueOf(max * 100)+"%",BOT_KEY));
+                chatsModelArrayList.add(new ChatsModel("It seems that this is not any kind of Skin Cancer with accuracy "+ String.valueOf(max * 100)+"%.",BOT_KEY));
             }
             chatRVAdapter.notifyDataSetChanged();
             chatsRV.scrollToPosition(chatsModelArrayList.size() - 1);
