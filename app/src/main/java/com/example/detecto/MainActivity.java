@@ -122,7 +122,13 @@ public class MainActivity extends AppCompatActivity {
 //        imgBitmap= imgBitmap.copy(Bitmap.Config.ARGB_8888, true);
         TensorImage tensorImage = new TensorImage(DataType.FLOAT32);
         tensorImage.load(imgBitmap);
-        ByteBuffer byteBuffer = tensorImage.getBuffer();
+        ByteBuffer byteBuffer=null;
+        try {
+            byteBuffer = tensorImage.getBuffer();
+        }catch (Exception e){
+            Toast.makeText(this, ""+e.getMessage(), Toast.LENGTH_SHORT).show();
+        }
+
         try {
             Model model = Model.newInstance(getApplicationContext());
 
