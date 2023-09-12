@@ -209,9 +209,9 @@ public class MainActivity extends AppCompatActivity {
                     chatRVAdapter.notifyDataSetChanged();
                     chatsRV.scrollToPosition(chatsModelArrayList.size() - 1);
                     model();
-                    chatsModelArrayList.add(new ChatsModel(getFileName(uri), BOT_KEY));
-                    chatRVAdapter.notifyDataSetChanged();
-                    chatsRV.scrollToPosition(chatsModelArrayList.size() - 1);
+//                    chatsModelArrayList.add(new ChatsModel(getFileName(uri), BOT_KEY));
+//                    chatRVAdapter.notifyDataSetChanged();
+//                    chatsRV.scrollToPosition(chatsModelArrayList.size() - 1);
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
