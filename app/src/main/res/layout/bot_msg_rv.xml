@@ -35,7 +35,7 @@
             android:layout_height="wrap_content"
             android:elevation="8dp"
             app:cardBackgroundColor="#C5C3C3"
-            app:cardCornerRadius="8dp"
+            app:cardCornerRadius="5dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
@@ -65,7 +65,7 @@
                         android:layout_height="35dp"
                         android:layout_gravity="center"
                         android:layout_margin="6dp"
-                        android:src="@drawable/bot" />
+                        android:src="@drawable/bot_img2" />
 
 
                 </LinearLayout>
