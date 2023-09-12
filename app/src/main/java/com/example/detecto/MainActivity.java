@@ -67,7 +67,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        getSupportActionBar().hide();
+//        getSupportActionBar().hide();
         chatsRV = findViewById(R.id.RVchats);
         editmsg = findViewById(R.id.EditMsg);
 //        camera = findViewById(R.id.camera);
