@@ -34,8 +34,22 @@
         android:padding="5dp"
         app:layout_constraintBottom_toBottomOf="parent">
 
+<!--        <com.google.android.material.floatingactionbutton.FloatingActionButton-->
+<!--            android:id="@+id/camera"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_alignParentStart="true"-->
+<!--            android:layout_marginStart="5dp"-->
+<!--            android:layout_marginTop="5dp"-->
+<!--            android:layout_marginEnd="5dp"-->
+<!--            android:layout_marginBottom="5dp"-->
+<!--            android:backgroundTint="@color/white"-->
+<!--            android:src="@drawable/baseline_camera_alt_24"-->
+<!--            app:borderWidth="0dp"-->
+<!--            app:fabCustomSize="45dp"></com.google.android.material.floatingactionbutton.FloatingActionButton>-->
+
         <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/camera"
+            android:id="@+id/attach"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
@@ -43,10 +57,12 @@
             android:layout_marginTop="5dp"
             android:layout_marginEnd="5dp"
             android:layout_marginBottom="5dp"
+
             android:backgroundTint="@color/white"
-            android:src="@drawable/baseline_camera_alt_24"
+            android:src="@drawable/baseline_photo_24"
             app:borderWidth="0dp"
             app:fabCustomSize="45dp"></com.google.android.material.floatingactionbutton.FloatingActionButton>
+
 
         <EditText
             android:id="@+id/EditMsg"
@@ -57,27 +73,13 @@
             android:layout_marginTop="3dp"
             android:layout_marginEnd="3dp"
             android:layout_marginBottom="3dp"
-            android:layout_toLeftOf="@+id/attach"
-            android:layout_toRightOf="@+id/camera"
+
+            android:layout_toRightOf="@+id/attach"
             android:background="@null"
             android:hint="Enter Message"
             android:singleLine="true"
             android:textColor="@color/black"
             android:textColorHint="@color/black" />
-
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/attach"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="5dp"
-            android:layout_marginTop="5dp"
-            android:layout_marginEnd="5dp"
-            android:layout_marginBottom="5dp"
-            android:layout_toLeftOf="@id/Send"
-            android:backgroundTint="@color/white"
-            android:src="@drawable/baseline_photo_24"
-            app:borderWidth="0dp"
-            app:fabCustomSize="45dp"></com.google.android.material.floatingactionbutton.FloatingActionButton>
 
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton

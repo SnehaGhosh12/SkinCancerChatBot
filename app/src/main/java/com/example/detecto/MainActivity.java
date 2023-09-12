@@ -30,6 +30,7 @@ import org.tensorflow.lite.support.tensorbuffer.TensorBuffer;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
+import java.util.Objects;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -58,7 +59,7 @@ public class MainActivity extends AppCompatActivity {
     String[] classe = {"melanocytic nevi", "melanoma", "benign keratosis-like lesions", "basal cell carcinoma", "pyogenic granulomas and hemorrhage",
             "Actinic keratoses and intraepithelial carcinomae", "dermatofibroma"};
 
-    String[] classes={"akiec","bcc","bkl","df","nv","vasc","mel"};
+    String[] classes={"Actinic keratoses","basal cell carcinoma","benign keratosis-like lesions","dermatofibroma","melanocytic nevi","Vascular lesion","melanoma"};
 
     @SuppressLint("MissingInflatedId")
     @Override
@@ -68,7 +69,7 @@ public class MainActivity extends AppCompatActivity {
         getSupportActionBar().hide();
         chatsRV = findViewById(R.id.RVchats);
         editmsg = findViewById(R.id.EditMsg);
-        camera = findViewById(R.id.camera);
+//        camera = findViewById(R.id.camera);
         attach = findViewById(R.id.attach);
         send = findViewById(R.id.Send);
         imgPreview = findViewById(R.id.skin_image);
@@ -105,13 +106,13 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
-        camera.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent iCamera = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                startActivityForResult(iCamera, CAMERA_REQ_CODE);
-            }
-        });
+//        camera.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Intent iCamera = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+//                startActivityForResult(iCamera, CAMERA_REQ_CODE);
+//            }
+//        });
     }
 
     private void model() {
@@ -143,12 +144,23 @@ public class MainActivity extends AppCompatActivity {
             }
             Log.d("i",""+res);
 
-            chatsModelArrayList.add(new ChatsModel(classes[res], BOT_KEY));
-            chatRVAdapter.notifyDataSetChanged();
 
-            chatsRV.scrollToPosition(chatsModelArrayList.size() - 1);
             // Releases model resources if no longer used.
             model.close();
+            Log.d("res:",classes[res]);
+            if(!Objects.equals(classes[res],"benign keratosis-like lesions")) {
+                chatsModelArrayList.add(new ChatsModel("There is a possibility of " + String.valueOf(max * 100) + "% that this maybe " + classes[res], BOT_KEY));
+
+            }else{
+                chatsModelArrayList.add(new ChatsModel("It seems that this is not any kind of Skin Cancer with accuracy "+ String.valueOf(max * 100)+"%",BOT_KEY));
+            }
+            chatRVAdapter.notifyDataSetChanged();
+            chatsRV.scrollToPosition(chatsModelArrayList.size() - 1);
+//
+//            chatsModelArrayList.add(new ChatsModel("Accuracy: "+String.valueOf(max*100)+"%", BOT_KEY));
+//            chatRVAdapter.notifyDataSetChanged();
+//
+//            chatsRV.scrollToPosition(chatsModelArrayList.size() - 1);
         } catch (IOException e) {
             // TODO Handle the exception
         }
